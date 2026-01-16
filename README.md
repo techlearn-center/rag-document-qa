@@ -1427,6 +1427,168 @@ FAILED tests/test_chunking.py::test_overlap_exists - AssertionError
 
 This teaches you the **debug cycle** that real developers use daily.
 
+### How to Watch CI/CD in Real-Time
+
+One of the best ways to understand CI/CD is to **watch it happen**. Here's how:
+
+#### Step-by-Step: Observe Your First Workflow Run
+
+1. **Make a small change** to any file (even just add a comment)
+   ```bash
+   # Edit src/ingest.py - add a comment at the top
+   # "# My first CI/CD test"
+   ```
+
+2. **Commit and push**
+   ```bash
+   git add .
+   git commit -m "Test CI/CD workflow"
+   git push origin main
+   ```
+
+3. **Immediately go to GitHub** - Open your repo in a browser
+
+4. **Click the "Actions" tab** - You'll see a yellow dot (🟡) indicating "in progress"
+
+5. **Click on your workflow run** - Watch it execute in real-time!
+
+6. **Observe each step** as it runs:
+   - 📥 Checkout code (~2 seconds)
+   - 🐍 Set up Python (~15 seconds)
+   - 📦 Install dependencies (~30 seconds)
+   - ⏳ Wait for Qdrant (~10 seconds)
+   - 📄 Test Chunking (~5 seconds)
+   - ... and so on
+
+7. **When it finishes**, click "Summary" to see your score
+
+#### What You're Seeing
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  YOUR COMPUTER                    │    GITHUB'S SERVERS         │
+├───────────────────────────────────┼─────────────────────────────┤
+│                                   │                             │
+│  You: git push                    │                             │
+│         │                         │                             │
+│         └─────────────────────────┼──▶ Receives your code      │
+│                                   │         │                   │
+│                                   │         ▼                   │
+│                                   │  Spins up fresh Ubuntu VM  │
+│                                   │         │                   │
+│                                   │         ▼                   │
+│  You: Watch Actions tab ◀─────────┼── Runs your tests          │
+│         │                         │         │                   │
+│         │                         │         ▼                   │
+│         └─ See results! ◀─────────┼── Reports pass/fail        │
+│                                   │                             │
+└───────────────────────────────────┴─────────────────────────────┘
+```
+
+#### Understanding Workflow Status Icons
+
+| Icon | Meaning | What To Do |
+|------|---------|------------|
+| 🟡 Yellow spinning | Running | Wait and watch! |
+| ✅ Green checkmark | All tests passed | Celebrate! |
+| ❌ Red X | Some tests failed | Click to see which ones |
+| ⏭️ Grey skip | Step was skipped | Usually missing secrets |
+
+#### Live Debugging Exercise
+
+Try this to experience the full CI/CD feedback loop:
+
+1. **Introduce a bug intentionally:**
+   ```python
+   # In src/ingest.py, temporarily change:
+   chunks.append(text[start:end])
+   # To:
+   chunks.append("BROKEN")  # This will fail tests!
+   ```
+
+2. **Push and watch it fail:**
+   ```bash
+   git add . && git commit -m "Test failure" && git push
+   ```
+
+3. **Go to Actions tab** - Watch the workflow run
+
+4. **When it fails:**
+   - Click on the failed run
+   - Click on the "Run Grading Tests" job
+   - Expand "📄 Test Chunking (Step 3)"
+   - Read the error message
+
+5. **Fix the bug** and push again:
+   ```bash
+   # Undo your change, then:
+   git add . && git commit -m "Fix chunking bug" && git push
+   ```
+
+6. **Watch it pass** - See the green checkmark appear!
+
+This is exactly how professional developers work:
+- Push code → CI runs → See failure → Read logs → Fix → Push → Pass ✅
+
+#### Pro Tips for Reading CI Logs
+
+When viewing a failed workflow:
+
+1. **Don't panic** - Failures are normal and expected!
+2. **Look for red text** - Errors are highlighted
+3. **Find the assertion** - Look for `AssertionError` or `assert`
+4. **Read the "Expected vs Got"** - This tells you what went wrong
+5. **Check line numbers** - The log shows which test file and line failed
+
+**Example of reading a failure:**
+```
+FAILED tests/test_chunking.py::test_chunk_overlap - AssertionError
+>       assert overlap_text in chunks[i+1], f"No overlap found"
+E       AssertionError: No overlap found
+E       assert 'quick brown' in 'jumps over the lazy dog'
+```
+
+Translation:
+- **What failed:** The overlap test
+- **Expected:** The text "quick brown" should appear in the next chunk
+- **Got:** The next chunk starts with "jumps over" (no overlap!)
+- **Fix:** Your overlap calculation is wrong
+
+### Why GitHub Actions Instead of Local Tests Only?
+
+You might wonder: "I already ran tests locally. Why run them again on GitHub?"
+
+| Local Testing | GitHub Actions CI |
+|--------------|-------------------|
+| Only tests YOUR machine | Tests on a fresh, clean machine |
+| "It works on my computer!" | "It works everywhere!" |
+| You might forget to run tests | Tests run automatically |
+| No proof you tested | Public record of all test runs |
+| Only you see results | Team sees results |
+
+**Real-world scenario:**
+> Developer A: "I pushed my code!"
+> Developer B: "Did you run tests?"
+> Developer A: "Uh... I think so?"
+>
+> **With CI/CD:**
+> Developer A: "I pushed my code - see the green checkmark? ✅"
+> Developer B: "Perfect, merging now."
+
+### Your CI/CD Learning Checklist
+
+Complete these to truly understand CI/CD:
+
+- [ ] Watch at least one workflow run from start to finish
+- [ ] Read the logs of a passing test
+- [ ] Intentionally break a test and watch it fail
+- [ ] Read the error logs to understand what failed
+- [ ] Fix the test and watch it pass again
+- [ ] Add your OPENAI_API_KEY secret to enable all tests
+- [ ] Get a 100/100 score on the workflow
+
+Once you've done all these, you'll have hands-on CI/CD experience that you can discuss in job interviews!
+
 ---
 
 ## Setup GitHub Secrets
@@ -1544,15 +1706,38 @@ docker ps  # Should show qdrant container
 </details>
 
 <details>
-<summary>❌ "ModuleNotFoundError"</summary>
+<summary>❌ "ModuleNotFoundError: No module named 'qdrant_client'" (or any module)</summary>
 
-Make sure you're in the virtual environment:
+This error means you're running Python **outside** the virtual environment.
+
+**The Fix:**
 ```bash
-# Should see (.venv) in your prompt
-# If not, activate it:
-source .venv/bin/activate  # Mac/Linux/Git Bash
-.venv\Scripts\activate     # Windows PowerShell/CMD
+# Step 1: Make sure you're in the project folder
+cd challenges/rag-document-qa
+
+# Step 2: Activate the virtual environment
+# Windows Git Bash (MINGW64):
+source .venv/Scripts/activate
+
+# Windows PowerShell/CMD:
+.venv\Scripts\activate
+
+# Mac/Linux:
+source .venv/bin/activate
+
+# Step 3: Verify - you should see (.venv) in your prompt:
+# (.venv) user@computer:~/rag-document-qa$
+
+# Step 4: Now run your command
+python run.py --demo
 ```
+
+**Why does this happen?**
+- When you installed dependencies with `pip install -r requirements.txt`, they went into `.venv/`
+- If you run Python without activating `.venv`, it uses your system Python which doesn't have these packages
+- You need to activate the virtual environment in **every new terminal window**
+
+**Quick check:** Run `which python` (Mac/Linux/Git Bash) or `where python` (Windows CMD). It should point to `.venv/Scripts/python` or `.venv/bin/python`.
 
 </details>
 
