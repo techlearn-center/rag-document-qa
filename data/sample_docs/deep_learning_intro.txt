@@ -1,0 +1,46 @@
+Introduction to Deep Learning
+
+Deep learning is a specialized subset of machine learning that uses artificial neural networks with multiple layers (hence "deep") to progressively extract higher-level features from raw input. Deep learning has revolutionized fields like computer vision, natural language processing, and speech recognition.
+
+Neural Network Architecture
+
+A neural network consists of:
+
+- Input Layer: Receives the raw data (pixels, words, numbers)
+- Hidden Layers: Process and transform data through learned weights
+- Output Layer: Produces the final prediction or classification
+
+Each connection between neurons has a weight that is adjusted during training. Neurons also have activation functions that introduce non-linearity, allowing networks to learn complex patterns.
+
+Common Activation Functions
+
+- ReLU (Rectified Linear Unit): f(x) = max(0, x) - Most popular for hidden layers
+- Sigmoid: f(x) = 1/(1+e^-x) - Used for binary classification outputs
+- Softmax: Converts outputs to probability distribution - Used for multi-class classification
+- Tanh: f(x) = (e^x - e^-x)/(e^x + e^-x) - Similar to sigmoid but centered at zero
+
+Training Deep Networks
+
+The training process involves:
+
+1. Forward Pass: Data flows through the network to produce predictions
+2. Loss Calculation: Compare predictions with actual labels using a loss function
+3. Backpropagation: Calculate gradients of the loss with respect to each weight
+4. Weight Update: Adjust weights using an optimizer like SGD or Adam
+
+Popular Deep Learning Architectures
+
+Convolutional Neural Networks (CNNs): Specialized for image processing. Use convolutional layers to detect features like edges, textures, and objects. Key architectures include VGG, ResNet, and EfficientNet.
+
+Recurrent Neural Networks (RNNs): Designed for sequential data like text and time series. Include memory to retain information from previous inputs. LSTM and GRU are improved variants that handle long-term dependencies.
+
+Transformers: Modern architecture based on attention mechanisms. Powers models like BERT, GPT, and T5. Excellent for natural language understanding and generation.
+
+Applications of Deep Learning
+
+- Image Recognition: Identifying objects, faces, and scenes in photos
+- Natural Language Processing: Translation, sentiment analysis, chatbots
+- Speech Recognition: Converting spoken words to text
+- Autonomous Vehicles: Processing sensor data for self-driving
+- Healthcare: Diagnosing diseases from medical images
+- Recommendation Systems: Suggesting content based on user preferences

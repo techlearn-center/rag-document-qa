@@ -1,0 +1,151 @@
+{
+  "id": "rag-document-qa",
+  "title": "Build a RAG Document Q&A System",
+  "description": "Create a complete Retrieval-Augmented Generation pipeline that answers questions about documents using embeddings, vector search, and LLM generation.",
+  "category": "rag",
+  "difficulty": "intermediate",
+  "estimated_time": "3-4 hours",
+  "points": 100,
+  "prerequisites": [
+    "Python basics",
+    "API usage fundamentals",
+    "Basic understanding of ML concepts"
+  ],
+  "skills_learned": [
+    "Document chunking strategies",
+    "Text embeddings with OpenAI",
+    "Vector database operations (Qdrant)",
+    "Semantic similarity search",
+    "LLM prompt engineering",
+    "RAG pipeline architecture"
+  ],
+  "tech_stack": {
+    "language": "python",
+    "version": "3.9+",
+    "dependencies": [
+      "openai",
+      "qdrant-client",
+      "pytest"
+    ],
+    "services": [
+      "Qdrant (Docker)"
+    ],
+    "apis": [
+      "OpenAI Embeddings API",
+      "OpenAI Chat Completions API"
+    ]
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Understand RAG Architecture",
+      "description": "Learn why RAG exists and how it improves LLM responses",
+      "type": "reading",
+      "files": ["data/sample_docs/*.txt"],
+      "tests": []
+    },
+    {
+      "number": 2,
+      "title": "Set Up Development Environment",
+      "description": "Start Docker, create venv, install dependencies",
+      "type": "setup",
+      "commands": [
+        "docker-compose up -d",
+        "python -m venv venv",
+        "pip install -r requirements.txt"
+      ],
+      "tests": []
+    },
+    {
+      "number": 3,
+      "title": "Implement Document Chunking",
+      "description": "Split documents into overlapping chunks for retrieval",
+      "type": "coding",
+      "files": ["src/ingest.py"],
+      "function": "chunk_document",
+      "tests": ["tests/test_chunking.py"],
+      "hints": [
+        "Use a sliding window approach",
+        "Step size should be chunk_size - overlap",
+        "Handle edge cases: empty string, short strings"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Generate Embeddings",
+      "description": "Convert text chunks into vector representations",
+      "type": "coding",
+      "files": ["src/embeddings.py"],
+      "function": "generate_embeddings",
+      "tests": ["tests/test_embeddings.py"],
+      "hints": [
+        "Use OpenAI's text-embedding-3-small model",
+        "Process in batches for efficiency",
+        "Extract from response.data[i].embedding"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Store Vectors in Qdrant",
+      "description": "Save embeddings to vector database for retrieval",
+      "type": "coding",
+      "files": ["src/retriever.py"],
+      "function": "store_embeddings",
+      "tests": ["tests/test_retriever.py::TestStoreEmbeddings"],
+      "hints": [
+        "Create PointStruct with id, vector, payload",
+        "Use client.upsert() to insert points",
+        "Payload should include content and metadata"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Implement Vector Search",
+      "description": "Find relevant documents using similarity search",
+      "type": "coding",
+      "files": ["src/retriever.py"],
+      "function": "search",
+      "tests": ["tests/test_retriever.py::TestSearch"],
+      "hints": [
+        "Use client.search() with query_vector",
+        "Results have .payload and .score",
+        "Return sorted by score descending"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Build the Q&A Chain",
+      "description": "Connect retrieval with LLM for answer generation",
+      "type": "coding",
+      "files": ["src/qa_chain.py"],
+      "function": "answer_question",
+      "tests": ["tests/test_qa.py"],
+      "hints": [
+        "Retrieve relevant chunks first",
+        "Build context from chunks",
+        "Create prompt template with context + question",
+        "Return answer with sources"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Test & Submit",
+      "description": "Run all tests and submit for grading",
+      "type": "testing",
+      "commands": [
+        "pytest -v"
+      ],
+      "tests": ["tests/"]
+    }
+  ],
+  "grading": {
+    "test_chunking": 20,
+    "test_embeddings": 20,
+    "test_retriever_store": 20,
+    "test_retriever_search": 20,
+    "test_qa": 20
+  },
+  "solution_repo": "elevatehub/rag-document-qa-solution",
+  "created_at": "2025-01-15",
+  "updated_at": "2025-01-15"
+}

@@ -1,0 +1,247 @@
+# RAG Challenge Grading Workflow
+# This workflow runs automatically when you push code.
+# It tests your implementation and shows results in the Actions tab.
+
+name: 🎯 Grade Challenge
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  grade:
+    name: Run Grading Tests
+    runs-on: ubuntu-latest
+
+    # Store test results for the summary
+    outputs:
+      chunking_passed: ${{ steps.chunking.outputs.passed }}
+      embeddings_passed: ${{ steps.embeddings.outputs.passed }}
+      storage_passed: ${{ steps.storage.outputs.passed }}
+      search_passed: ${{ steps.search.outputs.passed }}
+      qa_passed: ${{ steps.qa.outputs.passed }}
+      total_score: ${{ steps.summary.outputs.total_score }}
+
+    services:
+      # Qdrant vector database for testing
+      qdrant:
+        image: qdrant/qdrant:latest
+        ports:
+          - 6333:6333
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: ⏳ Wait for Qdrant
+        run: |
+          echo "Waiting for Qdrant to be ready..."
+          for i in {1..30}; do
+            if curl -s http://localhost:6333/ > /dev/null; then
+              echo "Qdrant is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+
+      # ==========================================
+      # STEP 3: Test Document Chunking (20 points)
+      # ==========================================
+      - name: 📄 Test Chunking (Step 3)
+        id: chunking
+        continue-on-error: true
+        run: |
+          echo "## Step 3: Document Chunking" >> $GITHUB_STEP_SUMMARY
+          if pytest tests/test_chunking.py -v --tb=short 2>&1 | tee chunking_output.txt; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ **PASSED** - 20/20 points" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ **FAILED** - 0/20 points" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>View errors</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 chunking_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      # ==========================================
+      # STEP 4: Test Embeddings (20 points)
+      # ==========================================
+      - name: 🔢 Test Embeddings (Step 4)
+        id: embeddings
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "## Step 4: Generate Embeddings" >> $GITHUB_STEP_SUMMARY
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "passed=skip" >> $GITHUB_OUTPUT
+            echo "⏭️ **SKIPPED** - OPENAI_API_KEY not configured" >> $GITHUB_STEP_SUMMARY
+            echo "_Add your API key in repository Settings → Secrets → Actions_" >> $GITHUB_STEP_SUMMARY
+          elif pytest tests/test_embeddings.py -v --tb=short 2>&1 | tee embeddings_output.txt; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ **PASSED** - 20/20 points" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ **FAILED** - 0/20 points" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>View errors</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 embeddings_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      # ==========================================
+      # STEP 5: Test Vector Storage (20 points)
+      # ==========================================
+      - name: 💾 Test Storage (Step 5)
+        id: storage
+        continue-on-error: true
+        env:
+          QDRANT_HOST: localhost
+        run: |
+          echo "## Step 5: Store Vectors" >> $GITHUB_STEP_SUMMARY
+          if pytest tests/test_retriever.py::TestStoreEmbeddings -v --tb=short 2>&1 | tee storage_output.txt; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ **PASSED** - 20/20 points" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ **FAILED** - 0/20 points" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>View errors</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 storage_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      # ==========================================
+      # STEP 6: Test Vector Search (20 points)
+      # ==========================================
+      - name: 🔍 Test Search (Step 6)
+        id: search
+        continue-on-error: true
+        env:
+          QDRANT_HOST: localhost
+        run: |
+          echo "## Step 6: Vector Search" >> $GITHUB_STEP_SUMMARY
+          if pytest tests/test_retriever.py::TestSearch -v --tb=short 2>&1 | tee search_output.txt; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ **PASSED** - 20/20 points" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ **FAILED** - 0/20 points" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>View errors</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 search_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      # ==========================================
+      # STEP 7: Test Q&A Chain (20 points)
+      # ==========================================
+      - name: 🤖 Test Q&A Chain (Step 7)
+        id: qa
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          QDRANT_HOST: localhost
+        run: |
+          echo "## Step 7: Q&A Chain" >> $GITHUB_STEP_SUMMARY
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "passed=skip" >> $GITHUB_OUTPUT
+            echo "⏭️ **SKIPPED** - OPENAI_API_KEY not configured" >> $GITHUB_STEP_SUMMARY
+          elif pytest tests/test_qa.py -v --tb=short 2>&1 | tee qa_output.txt; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ **PASSED** - 20/20 points" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ **FAILED** - 0/20 points" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>View errors</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 qa_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      # ==========================================
+      # Calculate Total Score
+      # ==========================================
+      - name: 📊 Calculate Score
+        id: summary
+        run: |
+          score=0
+
+          if [ "${{ steps.chunking.outputs.passed }}" == "true" ]; then
+            score=$((score + 20))
+          fi
+
+          if [ "${{ steps.embeddings.outputs.passed }}" == "true" ]; then
+            score=$((score + 20))
+          fi
+
+          if [ "${{ steps.storage.outputs.passed }}" == "true" ]; then
+            score=$((score + 20))
+          fi
+
+          if [ "${{ steps.search.outputs.passed }}" == "true" ]; then
+            score=$((score + 20))
+          fi
+
+          if [ "${{ steps.qa.outputs.passed }}" == "true" ]; then
+            score=$((score + 20))
+          fi
+
+          echo "total_score=$score" >> $GITHUB_OUTPUT
+
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "# 🎯 Total Score: $score/100" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ $score -eq 100 ]; then
+            echo "## 🎉 CHALLENGE COMPLETE!" >> $GITHUB_STEP_SUMMARY
+            echo "Congratulations! You've successfully built a RAG Document Q&A system!" >> $GITHUB_STEP_SUMMARY
+          elif [ $score -ge 60 ]; then
+            echo "## 💪 Good progress! Keep going!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## 📚 Keep working on it!" >> $GITHUB_STEP_SUMMARY
+            echo "Check the failed tests above and refer to the hints in README.md" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # ==========================================
+      # Final Status Check
+      # ==========================================
+      - name: ✅ Check if all tests passed
+        if: steps.summary.outputs.total_score != '100'
+        run: |
+          echo "Score: ${{ steps.summary.outputs.total_score }}/100"
+          echo "Some tests are still failing. Keep working on it!"
+          # Don't fail the job - students should see partial progress
+          # exit 1
