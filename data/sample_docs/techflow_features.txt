@@ -1,0 +1,292 @@
+TechFlow Features Guide
+=======================
+
+A complete overview of what you can do with TechFlow.
+
+CORE FEATURES
+-------------
+
+=== Task Management ===
+
+Create Tasks
+  Click the "+ Add task" button or press "T" anywhere to quickly create a task.
+
+Task Fields:
+  - Title: What needs to be done
+  - Description: Details, context, requirements (supports markdown)
+  - Status: Todo, In Progress, In Review, Done (customizable)
+  - Assignee: Who's responsible
+  - Due Date: When it's due
+  - Priority: Low, Medium, High, Urgent
+  - Tags: Custom labels for organization
+  - Subtasks: Break big tasks into smaller steps
+  - Dependencies: Link tasks that block each other
+
+Task Views:
+  - List View: Traditional list, great for quick scanning
+  - Board View: Kanban-style columns by status
+  - Calendar View: See tasks by due date
+  - Timeline View: Gantt-chart style for project planning
+  - Table View: Spreadsheet-like with custom columns
+
+Bulk Actions:
+  Select multiple tasks to:
+  - Change status
+  - Reassign
+  - Move to different project
+  - Set due dates
+  - Delete
+
+=== Projects ===
+
+Organize work into projects. Each project has its own:
+  - Task list
+  - Member permissions
+  - Views and filters
+  - Progress tracking
+
+Project Templates:
+  - Marketing Campaign
+  - Product Launch
+  - Sprint Planning
+  - Event Planning
+  - Bug Tracking
+  - Or create your own!
+
+Project Settings:
+  - Name, description, color
+  - Default task status workflow
+  - Required fields for tasks
+  - Automations (see below)
+
+=== Workspaces ===
+
+Workspaces are top-level containers for your organization.
+
+Use separate workspaces for:
+  - Different companies
+  - Client work vs internal
+  - Personal vs professional
+
+Each workspace has its own:
+  - Members and roles
+  - Billing (if on paid plan)
+  - Integrations
+  - Settings
+
+COLLABORATION
+-------------
+
+=== Comments & Discussions ===
+
+Add comments to any task:
+  - @mention teammates to notify them
+  - Attach files directly in comments
+  - Use emoji reactions for quick feedback
+  - Edit or delete your comments
+  - Comments are timestamped and show edit history
+
+=== Real-time Updates ===
+
+See changes instantly:
+  - Task updates appear without refreshing
+  - "Someone is typing..." indicator
+  - Presence indicators show who's online
+  - Activity feed shows recent changes
+
+=== Sharing ===
+
+Share with non-members:
+  - Public links (read-only)
+  - Guest access (limited editing)
+  - Export to PDF
+
+AUTOMATION
+----------
+
+Set up rules to automate repetitive work.
+
+When... (Triggers):
+  - Task is created
+  - Status changes
+  - Due date arrives
+  - Assignee changes
+  - Task is completed
+
+Then... (Actions):
+  - Change status
+  - Assign to someone
+  - Add tags
+  - Move to project
+  - Send notification
+  - Create subtasks
+  - Trigger webhook
+
+Example Automations:
+  1. "When task moves to 'In Review', assign to QA Lead"
+  2. "When task is completed, notify the project owner"
+  3. "When due date is tomorrow, set priority to High"
+  4. "When task has 'bug' tag, move to Bug Tracking project"
+
+INTEGRATIONS
+------------
+
+=== Slack ===
+  - Get notifications in Slack channels
+  - Create tasks from Slack messages
+  - Update task status from Slack
+  - /techflow slash commands
+
+=== GitHub ===
+  - Link PRs to tasks
+  - Auto-update tasks when PRs merge
+  - See commit history on tasks
+
+=== Google Calendar ===
+  - Sync task due dates to calendar
+  - Two-way sync (optional)
+  - Block time for task work
+
+=== Zapier ===
+  - Connect to 5,000+ apps
+  - No code automation
+  - Popular zaps: Gmail, Trello, Asana imports
+
+=== API ===
+  - Full REST API
+  - Webhooks for real-time events
+  - SDKs for Python, JavaScript, Ruby, Go
+
+TIME TRACKING
+-------------
+
+Track time spent on tasks (Pro plan and above).
+
+Features:
+  - Start/stop timer on any task
+  - Manual time entry
+  - Time reports by person, project, or date range
+  - Export to CSV for invoicing
+  - Billable vs non-billable hours
+
+REPORTING & DASHBOARDS
+----------------------
+
+=== Built-in Reports ===
+
+Workload Report:
+  See how much each team member has on their plate.
+  Identify overloaded or underutilized people.
+
+Progress Report:
+  Track completion rates over time.
+  Spot trends and bottlenecks.
+
+Time Report:
+  Where is time being spent?
+  Which projects take the most effort?
+
+=== Custom Dashboards (Business plan) ===
+
+Create dashboards with:
+  - Charts (bar, line, pie)
+  - Metrics (task counts, completion %)
+  - Filters by project, team, date
+  - Shareable links
+
+MOBILE APP
+----------
+
+Full-featured iOS and Android apps.
+
+Mobile features:
+  - Create and edit tasks
+  - Comment and @mention
+  - Push notifications
+  - Offline mode (syncs when online)
+  - Dark mode
+  - Quick capture widget
+
+KEYBOARD SHORTCUTS
+------------------
+
+Work faster with shortcuts:
+
+Navigation:
+  G then P = Go to Projects
+  G then I = Go to Inbox
+  G then M = Go to My Tasks
+  / = Search
+
+Tasks:
+  T = New task
+  E = Edit selected task
+  D = Set due date
+  A = Assign
+  M = Move to project
+  Space = Toggle complete
+  Delete = Delete task
+
+Views:
+  1 = List view
+  2 = Board view
+  3 = Calendar view
+  4 = Timeline view
+
+Other:
+  ? = Show all shortcuts
+  Esc = Close modal/cancel
+
+ACCESSIBILITY
+-------------
+
+TechFlow is committed to accessibility:
+  - Full keyboard navigation
+  - Screen reader support
+  - High contrast mode
+  - Reduced motion option
+  - WCAG 2.1 AA compliant
+
+SECURITY
+--------
+
+Enterprise-grade security:
+  - SOC 2 Type II certified
+  - Data encrypted at rest and in transit
+  - Two-factor authentication
+  - SSO support (SAML, OIDC)
+  - Audit logs (Business plan)
+  - Data residency options (Enterprise)
+  - 99.9% uptime SLA
+
+WHAT'S NEW (Recent Updates)
+---------------------------
+
+March 2024:
+  - Timeline view redesign
+  - Improved mobile offline mode
+  - New automation actions
+
+February 2024:
+  - Custom fields (Business plan)
+  - GitHub integration improvements
+  - Performance optimizations
+
+January 2024:
+  - Dark mode on web
+  - Recurring tasks
+  - Comment reactions
+
+GETTING HELP
+------------
+
+In-app help:
+  - Click the ? icon for contextual help
+  - Search the help panel
+
+Resources:
+  - Help Center: help.techflow.io
+  - Video Tutorials: techflow.io/tutorials
+  - Community Forum: community.techflow.io
+  - Live Chat: In-app (Pro plan and above)
+  - Email: support@techflow.io

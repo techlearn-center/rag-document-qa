@@ -1,6 +1,6 @@
-# Build a RAG Document Q&A System
+# Build a Customer Support Bot with RAG
 
-> **What you'll create:** A system that can answer questions about any documents you give it - like having a personal assistant who has read all your files.
+> **What you'll create:** A smart customer support bot for TechFlow (a fictional SaaS product) that can answer questions by searching through help documents - just like the AI assistants used by real companies!
 
 ---
 
@@ -31,11 +31,27 @@ git push origin main
 
 ## What is This Challenge?
 
-Imagine you have 100 PDF documents and want to ask: *"What did the contract say about payment terms?"*
+Imagine you're building a customer support bot for **TechFlow**, a project management SaaS tool. Customers ask questions like:
 
-Instead of reading all 100 documents, a **RAG system** (Retrieval-Augmented Generation) finds the relevant parts and answers your question using AI.
+- *"How do I reset my password?"*
+- *"What's included in the Pro plan?"*
+- *"How do I use the API to create tasks?"*
 
-**By the end of this challenge, you will have built this system yourself.**
+Instead of programming answers to every possible question, a **RAG system** (Retrieval-Augmented Generation) searches through TechFlow's help documentation and uses AI to generate accurate answers.
+
+**By the end of this challenge, you will have built this support bot yourself.**
+
+### The Scenario
+
+You're a developer at TechFlow. The support team is overwhelmed with repetitive questions. Your job: build an AI bot that can answer common questions by searching through:
+
+- Getting Started Guide
+- Pricing & Plans
+- Troubleshooting Guide
+- Feature Documentation
+- API Reference
+
+**This is exactly how companies like Intercom, Zendesk, and Notion build their AI support features!**
 
 ---
 
@@ -134,26 +150,31 @@ When all steps are complete:
 python run.py --demo
 ```
 
-This launches an **interactive Q&A session** where you can ask questions about the sample documents and see YOUR system answer them!
+This launches an **interactive Q&A session** where you can ask customer questions and see YOUR support bot answer them!
 
 ```
-  🚀 RAG System Ready!
+  🚀 TechFlow Support Bot Ready!
 
   ──────────────────────────────────────────────────
-  Ask questions about the documents.
+  Ask any question about TechFlow.
   Type 'quit' to exit.
   ──────────────────────────────────────────────────
 
-  Your question: What is machine learning?
+  Customer question: How do I reset my password?
 
-  Searching and generating answer...
+  Searching help docs and generating answer...
 
   Answer:
-  Machine learning is a subset of artificial intelligence (AI)
-  that enables systems to learn and improve from experience
-  without being explicitly programmed...
+  To reset your password, follow these steps:
+  1. Go to app.techflow.io/login
+  2. Click "Forgot password?"
+  3. Enter your email address
+  4. Check your inbox for the reset link (check spam folder too)
+  5. Click the link and create a new password
 
-  Sources: machine_learning_basics.txt
+  Note: Reset links expire after 24 hours.
+
+  Sources: techflow_troubleshooting.txt
 ```
 
 ### What If You're Stuck?
@@ -481,10 +502,15 @@ Question → [EMBED] → Vector → [SEARCH] ───────────�
 
 ### Read the Sample Documents
 
-Look at the files in `data/sample_docs/`. These are what your system will answer questions about:
-- `machine_learning_basics.txt`
-- `deep_learning_intro.txt`
-- `rag_explained.txt`
+Look at the files in `data/sample_docs/`. These are TechFlow's help documents that your bot will search through:
+
+- `techflow_getting_started.txt` - New user guide
+- `techflow_pricing.txt` - Plans and pricing
+- `techflow_troubleshooting.txt` - Common issues and solutions
+- `techflow_features.txt` - Complete feature list
+- `techflow_api_reference.txt` - API documentation
+
+Take a few minutes to read through them - understanding the content helps you test your bot better!
 
 ---
 
@@ -1070,11 +1096,14 @@ print('\nReady to answer questions!')
 python qa_chain.py
 ```
 
-**Try these questions:**
-- "What is machine learning?"
-- "What's the difference between supervised and unsupervised learning?"
-- "How does RAG work?"
-- "What is backpropagation?"
+**Try these customer support questions:**
+- "How do I reset my password?"
+- "What's included in the Pro plan?"
+- "My account is locked, what do I do?"
+- "How do I create a task via the API?"
+- "What's the rate limit for API requests?"
+- "Does TechFlow have a mobile app?"
+- "How do I set up Slack integration?"
 
 ### 8.3 Run All Tests
 
@@ -1397,17 +1426,18 @@ Read the error message carefully. Common issues:
 
 By completing this challenge, you now understand:
 
-- ✅ **Document Chunking** - How to split text for retrieval
+- ✅ **Document Chunking** - How to split help docs for retrieval
 - ✅ **Text Embeddings** - Converting text to searchable vectors
 - ✅ **Vector Databases** - Storing and searching by meaning
-- ✅ **RAG Architecture** - How modern AI assistants access external knowledge
-- ✅ **Prompt Engineering** - Structuring prompts for accurate answers
+- ✅ **RAG Architecture** - How AI support bots access knowledge bases
+- ✅ **Prompt Engineering** - Structuring prompts for accurate, helpful answers
 
 **This is the same technology powering:**
+- Intercom's AI chatbot (Fin)
+- Zendesk's Answer Bot
+- Notion's Q&A feature
 - ChatGPT with file uploads
 - Enterprise knowledge bases
-- AI-powered search engines
-- Customer support chatbots
 
 ---
 
@@ -1415,10 +1445,79 @@ By completing this challenge, you now understand:
 
 Want to go further? Try:
 
-1. **Add your own documents** - Put PDFs or text files in `data/sample_docs/`
+1. **Add more TechFlow docs** - Create security policies, release notes, etc.
 2. **Improve chunking** - Split on sentences instead of characters
-3. **Add metadata filtering** - Search only specific document types
+3. **Add metadata filtering** - Search only troubleshooting vs features
 4. **Build a web UI** - Create a simple chat interface
+
+---
+
+## 🎁 Bonus Challenge: Add Your Own Documents!
+
+**Congratulations on completing the main challenge!** Now make it your own.
+
+### Option A: Expand TechFlow's Knowledge Base
+
+Add more documentation to make the support bot smarter:
+
+1. Create new files in `data/sample_docs/`:
+   - `techflow_security.txt` - Security policies and compliance
+   - `techflow_release_notes.txt` - Recent updates and changes
+   - `techflow_integrations.txt` - Detailed integration guides
+   - `techflow_billing_faq.txt` - Common billing questions
+
+2. Re-run the ingestion to include new docs
+3. Test with questions about the new content!
+
+### Option B: Build a Support Bot for YOUR Product
+
+Replace TechFlow with something you care about:
+
+**Ideas:**
+- Your school or company's internal documentation
+- A product you use (scrape their help docs)
+- A hobby (gaming wiki, cooking recipes, workout guides)
+- Open source project documentation (React, Python, etc.)
+
+**Steps:**
+1. Delete the TechFlow files from `data/sample_docs/`
+2. Add your own `.txt` or `.md` files
+3. Re-run ingestion
+4. You now have a custom Q&A bot!
+
+### Option C: Add PDF Support
+
+Most real documentation is in PDF format. Extend your system:
+
+1. Install PyPDF2: `uv pip install pypdf2`
+2. Modify `ingest.py` to extract text from PDFs
+3. Add PDFs to `data/sample_docs/`
+4. Your bot can now answer questions from PDFs!
+
+<details>
+<summary>💡 Hint: PDF extraction code</summary>
+
+```python
+from PyPDF2 import PdfReader
+
+def extract_pdf_text(pdf_path: str) -> str:
+    reader = PdfReader(pdf_path)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text() + "\n"
+    return text
+```
+
+</details>
+
+### Share Your Creation!
+
+Built something cool? Share it:
+- Post on LinkedIn with #RAGChallenge
+- Show your instructor
+- Add it to your portfolio
+
+**Pro tip:** A working RAG system with custom documents is a great interview talking point!
 
 ---
 

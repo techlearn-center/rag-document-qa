@@ -1,0 +1,203 @@
+TechFlow Troubleshooting Guide
+==============================
+
+Common issues and how to resolve them.
+
+ACCOUNT & LOGIN ISSUES
+----------------------
+
+"I forgot my password"
+Solution:
+1. Go to app.techflow.io/login
+2. Click "Forgot password?"
+3. Enter your email address
+4. Check your inbox for reset link (check spam folder too)
+5. Click the link and create a new password
+Note: Reset links expire after 24 hours.
+
+"I'm not receiving the password reset email"
+Solutions:
+- Check your spam/junk folder
+- Add noreply@techflow.io to your contacts
+- Try a different email if you have multiple accounts
+- Contact support@techflow.io if still not working
+
+"My account is locked"
+This happens after 5 failed login attempts.
+Solution:
+- Wait 30 minutes, then try again
+- Or click "Forgot password?" to reset immediately
+- Contact support if you suspect unauthorized access
+
+"I can't access my workspace"
+Possible causes:
+- Your account was removed by an admin
+- The workspace was deleted
+- Your email domain changed
+Solution: Contact your workspace admin or support@techflow.io
+
+TASK & PROJECT ISSUES
+---------------------
+
+"I can't create new tasks"
+Possible causes:
+- You don't have permission (Guest users can't create tasks)
+- The project is archived
+- Free plan limit reached (3 projects max)
+Solutions:
+- Ask your admin to change your role to Member
+- Unarchive the project (Projects > Archived > Restore)
+- Upgrade to Pro plan for unlimited projects
+
+"Tasks are not saving"
+Possible causes:
+- Network connection issue
+- Browser cache problem
+- Session expired
+Solutions:
+- Check your internet connection
+- Refresh the page (Ctrl+R / Cmd+R)
+- Clear browser cache and cookies
+- Log out and log back in
+
+"I accidentally deleted a task"
+Solution:
+1. Go to the project
+2. Click the "..." menu > "View deleted items"
+3. Find the task and click "Restore"
+Note: Deleted items are kept for 30 days.
+
+"My task due dates are wrong"
+This is usually a timezone issue.
+Solution:
+1. Go to Settings > Profile
+2. Check your timezone setting
+3. Update to your correct timezone
+4. Refresh the page
+
+NOTIFICATION ISSUES
+-------------------
+
+"I'm not getting email notifications"
+Solutions:
+1. Check Settings > Notifications > Email
+2. Make sure email notifications are enabled
+3. Check if specific notification types are turned off
+4. Add notifications@techflow.io to your contacts
+5. Check your spam folder
+
+"I'm getting too many notifications"
+Solutions:
+1. Go to Settings > Notifications
+2. Disable notifications you don't need:
+   - Uncheck "All activity on tasks I follow"
+   - Uncheck "Daily digest emails"
+3. Use "Mute" on specific projects or tasks
+4. Set "Do Not Disturb" hours
+
+"Slack notifications aren't working"
+Solutions:
+1. Check if the Slack integration is connected:
+   - Workspace Settings > Integrations > Slack
+2. Make sure the TechFlow bot is in the channel
+3. Reinstall the integration if needed
+4. Check Slack's own notification settings
+
+SYNC & PERFORMANCE ISSUES
+-------------------------
+
+"The app is slow"
+Solutions:
+- Clear browser cache (Ctrl+Shift+Delete)
+- Disable browser extensions temporarily
+- Try a different browser (Chrome recommended)
+- Close other tabs to free memory
+- Check your internet speed
+
+"Changes aren't syncing between devices"
+Solutions:
+- Make sure you're online on both devices
+- Pull down to refresh on mobile
+- Press F5 or Ctrl+R on desktop
+- Log out and log back in
+- Check for app updates (mobile)
+
+"The mobile app keeps crashing"
+Solutions:
+- Update to the latest app version
+- Restart your phone
+- Clear the app cache:
+  - iOS: Delete and reinstall the app
+  - Android: Settings > Apps > TechFlow > Clear Cache
+- Make sure you have enough storage space
+
+FILE & ATTACHMENT ISSUES
+------------------------
+
+"I can't upload files"
+Possible causes:
+- File is too large (max 100MB per file)
+- Storage limit reached
+- File type not supported
+Solutions:
+- Compress large files before uploading
+- Upgrade plan for more storage
+- Supported types: Images, PDFs, Office docs, text files
+
+"Attachments aren't loading"
+Solutions:
+- Check your internet connection
+- Try opening in a new tab
+- Clear browser cache
+- Try a different browser
+
+"I accidentally deleted an attachment"
+Unfortunately, deleted attachments cannot be recovered.
+Recommendation: Keep important files backed up elsewhere.
+
+BILLING ISSUES
+--------------
+
+"I was charged incorrectly"
+Contact support@techflow.io with:
+- Your workspace name
+- The charge amount and date
+- Screenshot of the charge
+We'll investigate within 24 hours.
+
+"My card was declined"
+Possible causes:
+- Insufficient funds
+- Card expired
+- Bank blocked the transaction
+Solutions:
+- Try a different card
+- Contact your bank to authorize the charge
+- Use PayPal as an alternative
+
+"I need a refund"
+Policy: Full refund within 30 days of purchase.
+Contact support@techflow.io with your workspace name.
+
+"I need an invoice"
+1. Go to Settings > Billing
+2. Click "Billing History"
+3. Click "Download" next to any payment
+Invoices are also emailed after each payment.
+
+STILL NEED HELP?
+----------------
+
+If your issue isn't listed here:
+
+1. Search our Help Center: help.techflow.io
+2. Ask the Community: community.techflow.io
+3. Email Support: support@techflow.io
+4. Live Chat: Click the chat icon (Pro plan and above)
+
+When contacting support, please include:
+- Your email address
+- Workspace name
+- Description of the issue
+- Screenshots if applicable
+- Browser/device information

@@ -1,0 +1,119 @@
+TechFlow Getting Started Guide
+==============================
+
+Welcome to TechFlow - The Project Management Platform for Modern Teams
+
+QUICK START (5 MINUTES)
+-----------------------
+
+1. Create Your Workspace
+   - Go to app.techflow.io/signup
+   - Enter your work email
+   - Choose a workspace name (usually your company name)
+   - Invite your team members
+
+2. Create Your First Project
+   - Click "+ New Project" in the sidebar
+   - Choose a template (Kanban, Scrum, or Blank)
+   - Name your project and add a description
+   - Invite team members to the project
+
+3. Add Your First Task
+   - Click "+ Add Task" in any column
+   - Enter a task title and description
+   - Assign it to a team member
+   - Set a due date and priority
+
+CORE CONCEPTS
+-------------
+
+Workspaces:
+A workspace is your company's home in TechFlow. All your projects, teams,
+and settings live here. You can have multiple workspaces if you work with
+different organizations.
+
+Projects:
+Projects are containers for related work. Each project has its own board,
+timeline, and team members. Examples: "Q1 Marketing Campaign", "Mobile App v2.0",
+"Customer Onboarding".
+
+Tasks:
+Tasks are the basic unit of work. Each task has:
+- Title and description
+- Assignee (who's responsible)
+- Due date
+- Priority (Low, Medium, High, Urgent)
+- Labels (for categorization)
+- Comments (for discussion)
+- Attachments (files, images)
+
+Columns/Stages:
+Tasks move through stages like "To Do", "In Progress", "Review", "Done".
+You can customize these stages for each project.
+
+KEYBOARD SHORTCUTS
+------------------
+
+Navigation:
+- G then H: Go to Home
+- G then P: Go to Projects
+- G then T: Go to My Tasks
+- / : Open search
+
+Tasks:
+- N: New task
+- E: Edit selected task
+- D: Set due date
+- A: Assign task
+- L: Add label
+- C: Add comment
+- Delete: Archive task
+
+Views:
+- 1: Board view
+- 2: List view
+- 3: Timeline view
+- 4: Calendar view
+
+MOBILE APP
+----------
+
+TechFlow is available on iOS and Android. Download from:
+- iOS: App Store, search "TechFlow"
+- Android: Google Play, search "TechFlow"
+
+The mobile app supports:
+- Viewing and editing tasks
+- Adding comments and attachments
+- Push notifications for updates
+- Offline mode (syncs when connected)
+
+INTEGRATIONS
+------------
+
+TechFlow integrates with:
+- Slack: Get notifications and create tasks from Slack
+- GitHub: Link commits and PRs to tasks
+- Google Drive: Attach files directly
+- Zoom: Start meetings from tasks
+- Figma: Preview designs in task attachments
+
+To set up integrations:
+1. Go to Workspace Settings > Integrations
+2. Click "Connect" next to the app
+3. Follow the authorization flow
+4. Configure notification preferences
+
+GETTING HELP
+------------
+
+- Help Center: help.techflow.io
+- Email Support: support@techflow.io
+- Live Chat: Click the chat icon in the app (Business plan and above)
+- Community Forum: community.techflow.io
+
+Support Hours:
+- Free plan: Email only, 48-hour response
+- Pro plan: Email + Chat, 24-hour response
+- Business plan: Priority support, 4-hour response
+- Enterprise: Dedicated support manager

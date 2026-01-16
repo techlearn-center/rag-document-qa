@@ -1,0 +1,295 @@
+TechFlow API Reference
+======================
+
+REST API for integrating TechFlow with your applications.
+
+BASE URL
+--------
+Production: https://api.techflow.io/v1
+Sandbox: https://sandbox-api.techflow.io/v1
+
+AUTHENTICATION
+--------------
+
+All API requests require authentication via API key.
+
+Include your API key in the header:
+  Authorization: Bearer YOUR_API_KEY
+
+To get an API key:
+1. Go to Settings > Integrations > API
+2. Click "Generate API Key"
+3. Copy and store securely (shown only once)
+
+API keys are tied to your workspace and user permissions.
+
+RATE LIMITS
+-----------
+Free plan: 100 requests/hour
+Pro plan: 1,000 requests/hour
+Business plan: 10,000 requests/hour
+Enterprise: Custom limits
+
+When rate limited, you'll receive:
+  HTTP 429 Too Many Requests
+  {"error": "rate_limit_exceeded", "retry_after": 60}
+
+ENDPOINTS
+---------
+
+=== TASKS ===
+
+GET /tasks
+  List all tasks in a project.
+
+  Query parameters:
+    - project_id (required): The project ID
+    - status: Filter by status (todo, in_progress, done)
+    - assignee: Filter by user ID
+    - limit: Max results (default 50, max 100)
+    - offset: Pagination offset
+
+  Example response:
+    {
+      "tasks": [
+        {
+          "id": "task_123",
+          "title": "Design homepage",
+          "status": "in_progress",
+          "assignee": "user_456",
+          "due_date": "2024-03-15",
+          "priority": "high"
+        }
+      ],
+      "total": 42,
+      "has_more": true
+    }
+
+POST /tasks
+  Create a new task.
+
+  Request body:
+    {
+      "project_id": "proj_789",
+      "title": "New feature",
+      "description": "Build the thing",
+      "assignee": "user_456",
+      "due_date": "2024-03-20",
+      "priority": "medium"
+    }
+
+  Returns: The created task object
+
+GET /tasks/{task_id}
+  Get a single task by ID.
+
+PATCH /tasks/{task_id}
+  Update a task. Only include fields you want to change.
+
+  Request body:
+    {
+      "status": "done",
+      "completed_at": "2024-03-10T14:30:00Z"
+    }
+
+DELETE /tasks/{task_id}
+  Delete a task. Moves to trash (recoverable for 30 days).
+
+=== PROJECTS ===
+
+GET /projects
+  List all projects you have access to.
+
+  Query parameters:
+    - workspace_id: Filter by workspace
+    - archived: Include archived (default false)
+
+POST /projects
+  Create a new project.
+
+  Request body:
+    {
+      "name": "Q1 Marketing Campaign",
+      "workspace_id": "ws_123",
+      "description": "Campaign planning and execution",
+      "color": "#FF5733"
+    }
+
+GET /projects/{project_id}
+  Get project details including member list.
+
+PATCH /projects/{project_id}
+  Update project settings.
+
+DELETE /projects/{project_id}
+  Archive a project. Use POST /projects/{id}/restore to unarchive.
+
+=== USERS ===
+
+GET /users/me
+  Get current user's profile.
+
+  Response:
+    {
+      "id": "user_456",
+      "email": "john@company.com",
+      "name": "John Smith",
+      "avatar_url": "https://...",
+      "role": "admin",
+      "workspaces": ["ws_123", "ws_456"]
+    }
+
+GET /users
+  List users in workspace (admin only).
+
+POST /users/invite
+  Invite a user to workspace.
+
+  Request body:
+    {
+      "email": "new@company.com",
+      "role": "member"
+    }
+
+=== COMMENTS ===
+
+GET /tasks/{task_id}/comments
+  List comments on a task.
+
+POST /tasks/{task_id}/comments
+  Add a comment.
+
+  Request body:
+    {
+      "content": "Looks good! Let's ship it.",
+      "mentions": ["user_789"]
+    }
+
+=== ATTACHMENTS ===
+
+POST /tasks/{task_id}/attachments
+  Upload a file. Use multipart/form-data.
+
+  Max file size: 100MB
+
+  Response:
+    {
+      "id": "att_123",
+      "filename": "design.png",
+      "size": 245678,
+      "url": "https://..."
+    }
+
+DELETE /attachments/{attachment_id}
+  Delete an attachment. Cannot be recovered.
+
+=== WEBHOOKS ===
+
+POST /webhooks
+  Create a webhook to receive events.
+
+  Request body:
+    {
+      "url": "https://your-server.com/webhook",
+      "events": ["task.created", "task.updated", "task.deleted"],
+      "secret": "your_signing_secret"
+    }
+
+Available events:
+  - task.created
+  - task.updated
+  - task.deleted
+  - task.completed
+  - comment.created
+  - project.created
+  - project.archived
+  - member.added
+  - member.removed
+
+Webhook payload example:
+  {
+    "event": "task.completed",
+    "timestamp": "2024-03-10T14:30:00Z",
+    "data": {
+      "task_id": "task_123",
+      "completed_by": "user_456",
+      "project_id": "proj_789"
+    }
+  }
+
+Verify webhooks using HMAC-SHA256 signature in X-TechFlow-Signature header.
+
+ERROR RESPONSES
+---------------
+
+All errors follow this format:
+  {
+    "error": "error_code",
+    "message": "Human readable description",
+    "details": {}  // Optional additional info
+  }
+
+Common error codes:
+  - invalid_request: Missing or invalid parameters
+  - authentication_failed: Invalid or missing API key
+  - permission_denied: User lacks required permissions
+  - not_found: Resource doesn't exist
+  - rate_limit_exceeded: Too many requests
+  - internal_error: Server error (contact support)
+
+PAGINATION
+----------
+
+List endpoints use offset-based pagination:
+  - limit: Items per page (default 50)
+  - offset: Skip this many items
+  - Response includes "total" and "has_more"
+
+Example:
+  GET /tasks?project_id=proj_123&limit=20&offset=40
+
+  Returns items 41-60, with total count
+
+SDK LIBRARIES
+-------------
+
+Official SDKs available:
+  - Python: pip install techflow-sdk
+  - JavaScript: npm install @techflow/sdk
+  - Ruby: gem install techflow
+  - Go: go get github.com/techflow/sdk-go
+
+Example (Python):
+  from techflow import TechFlow
+
+  client = TechFlow(api_key="YOUR_KEY")
+  tasks = client.tasks.list(project_id="proj_123")
+
+  for task in tasks:
+      print(task.title)
+
+CHANGELOG
+---------
+
+v1.3 (Current)
+  - Added webhooks support
+  - New attachment endpoints
+  - Improved rate limiting
+
+v1.2
+  - Added comment mentions
+  - Project archiving
+
+v1.1
+  - User invitation endpoint
+  - Batch task updates
+
+v1.0
+  - Initial release
+
+SUPPORT
+-------
+
+API issues: api-support@techflow.io
+Documentation: docs.techflow.io/api
+Status page: status.techflow.io

@@ -1,0 +1,122 @@
+TechFlow Pricing & Plans
+========================
+
+Choose the plan that fits your team's needs.
+
+FREE PLAN - $0/month
+--------------------
+Perfect for individuals and small teams getting started.
+
+Includes:
+- Up to 5 team members
+- 3 projects
+- Basic task management
+- Board and List views
+- 100 MB file storage
+- Mobile app access
+- Email support (48-hour response)
+
+Limitations:
+- No timeline or calendar views
+- No custom fields
+- No automations
+- No integrations
+- TechFlow branding on shared views
+
+PRO PLAN - $12/user/month (billed annually) or $15/month-to-month
+-----------------------------------------------------------------
+For growing teams that need more power and flexibility.
+
+Everything in Free, plus:
+- Unlimited team members
+- Unlimited projects
+- Timeline and Calendar views
+- Custom fields (text, numbers, dropdowns)
+- 10 GB file storage per user
+- Basic automations (up to 50/month)
+- Slack and Google Drive integrations
+- Priority email support (24-hour response)
+- Remove TechFlow branding
+
+Best for: Teams of 5-50 people
+
+BUSINESS PLAN - $24/user/month (billed annually) or $30/month-to-month
+----------------------------------------------------------------------
+For organizations that need advanced features and security.
+
+Everything in Pro, plus:
+- Advanced automations (unlimited)
+- All integrations (GitHub, Zoom, Figma, etc.)
+- Custom workflows and templates
+- Advanced reporting and analytics
+- 50 GB file storage per user
+- Admin controls and permissions
+- SSO (Single Sign-On) with SAML
+- Live chat support (4-hour response)
+- Audit logs
+
+Best for: Teams of 50-500 people
+
+ENTERPRISE PLAN - Custom pricing
+--------------------------------
+For large organizations with complex needs.
+
+Everything in Business, plus:
+- Unlimited file storage
+- Dedicated success manager
+- Custom onboarding and training
+- SLA guarantees (99.9% uptime)
+- Advanced security (SOC 2, HIPAA compliance)
+- Custom integrations and API access
+- On-premise deployment option
+- 24/7 phone support
+- Quarterly business reviews
+
+Contact sales@techflow.io for a custom quote.
+
+FREQUENTLY ASKED QUESTIONS
+--------------------------
+
+Q: Can I try Pro or Business before buying?
+A: Yes! We offer a 14-day free trial of any paid plan. No credit card required.
+   Go to Settings > Billing > Start Trial.
+
+Q: What happens when my trial ends?
+A: Your workspace automatically moves to the Free plan. No data is lost, but
+   you'll lose access to premium features until you upgrade.
+
+Q: Can I change plans anytime?
+A: Yes. Upgrades are immediate and prorated. Downgrades take effect at the
+   end of your billing cycle.
+
+Q: Do you offer discounts?
+A: Yes! We offer:
+   - 20% off annual billing (vs monthly)
+   - 50% off for nonprofits and educational institutions
+   - 25% off for startups (under 2 years old, under $1M funding)
+   Contact sales@techflow.io for discount codes.
+
+Q: What payment methods do you accept?
+A: We accept all major credit cards (Visa, Mastercard, Amex) and PayPal.
+   Enterprise customers can pay by invoice with NET-30 terms.
+
+Q: Is there a refund policy?
+A: Yes. If you're not satisfied within the first 30 days of a paid plan,
+   contact support@techflow.io for a full refund.
+
+COMPARING PLANS
+---------------
+
+Feature                  | Free | Pro  | Business | Enterprise
+-------------------------|------|------|----------|------------
+Team members             | 5    | ∞    | ∞        | ∞
+Projects                 | 3    | ∞    | ∞        | ∞
+Storage per user         | 100MB| 10GB | 50GB     | ∞
+Custom fields            | ✗    | ✓    | ✓        | ✓
+Automations              | ✗    | 50/mo| ∞        | ∞
+Timeline view            | ✗    | ✓    | ✓        | ✓
+Integrations             | ✗    | Basic| All      | All + Custom
+SSO/SAML                 | ✗    | ✗    | ✓        | ✓
+Audit logs               | ✗    | ✗    | ✓        | ✓
+Support                  | Email| Email| Chat     | Phone 24/7
+Support response         | 48hr | 24hr | 4hr      | 1hr
