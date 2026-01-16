@@ -392,6 +392,7 @@ uv pip install -r requirements.txt
 This installs:
 - `openai` - For embeddings and chat
 - `qdrant-client` - For the vector database
+- `gradio` - For the web UI
 - `pytest` - For running tests
 
 ### 1.4 Set Your OpenAI API Key
@@ -402,6 +403,17 @@ This installs:
 ```powershell
 $env:OPENAI_API_KEY="sk-your-key-here"
 ```
+
+</details>
+
+<details>
+<summary>🪟 Windows (Git Bash / MINGW64)</summary>
+
+```bash
+export OPENAI_API_KEY="sk-your-key-here"
+```
+
+**Note:** Git Bash uses Linux-style commands, not PowerShell syntax!
 
 </details>
 
@@ -870,10 +882,12 @@ Still in `src/retriever.py`, implement `search()`.
 <details>
 <summary>💡 Hint 1: Qdrant Search</summary>
 
+**Note:** The Qdrant client API has changed. Use `query_points()` instead of the old `search()` method:
+
 ```python
-results = client.search(
+results = client.query_points(
     collection_name="documents",
-    query_vector=[0.1, 0.2, ...],  # Your query embedding
+    query=[0.1, 0.2, ...],  # Your query embedding
     limit=5  # How many results
 )
 ```
@@ -883,17 +897,17 @@ results = client.search(
 <details>
 <summary>💡 Hint 2: Process Results</summary>
 
-Each result has:
-- `result.payload` - Your stored data (content, metadata)
-- `result.score` - How similar (0 to 1, higher = more similar)
+Results are accessed via `results.points`. Each point has:
+- `point.payload` - Your stored data (content, metadata)
+- `point.score` - How similar (0 to 1, higher = more similar)
 
 ```python
 processed = []
-for result in results:
+for point in results.points:
     processed.append({
-        "content": result.payload["content"],
-        "metadata": result.payload.get("metadata", {}),
-        "score": result.score
+        "content": point.payload["content"],
+        "metadata": point.payload.get("metadata", {}),
+        "score": point.score
     })
 ```
 
@@ -911,18 +925,18 @@ def search(
     if client is None:
         client = get_client()
 
-    results = client.search(
+    results = client.query_points(
         collection_name=COLLECTION_NAME,
-        query_vector=query_embedding,
+        query=query_embedding,
         limit=top_k
     )
 
     processed = []
-    for result in results:
+    for point in results.points:
         processed.append({
-            "content": result.payload["content"],
-            "metadata": result.payload.get("metadata", {}),
-            "score": result.score
+            "content": point.payload["content"],
+            "metadata": point.payload.get("metadata", {}),
+            "score": point.score
         })
 
     return processed
@@ -1116,7 +1130,19 @@ pytest -v
 
 ### 8.4 Launch the Web UI (Optional)
 
-Want a nicer interface? Launch the web-based chat UI:
+Want a nicer interface? Launch the web-based chat UI powered by Gradio:
+
+**First, make sure your API key is set:**
+
+```bash
+# Windows PowerShell:
+$env:OPENAI_API_KEY="sk-your-key-here"
+
+# Windows Git Bash / Mac / Linux:
+export OPENAI_API_KEY="sk-your-key-here"
+```
+
+**Then launch the web UI:**
 
 ```bash
 cd src
@@ -1129,8 +1155,94 @@ You'll see a chat interface where you can:
 - Type questions and get answers
 - Click example questions to try them
 - See which source documents were used
+- Have a conversation with the TechFlow Support Bot
+
+**Troubleshooting Web UI:**
+
+| Issue | Solution |
+|-------|----------|
+| "Port already in use" | Kill the process using port 7861 or change the port in `web_ui.py` |
+| "OPENAI_API_KEY not set" | Set the environment variable before running |
+| "Incorrect API key" | Check your API key is valid at platform.openai.com |
+| "No documents found" | Re-run the ingestion script (Step 8.1) |
 
 ![TechFlow Support Bot UI](https://via.placeholder.com/800x400?text=TechFlow+Support+Bot+Chat+Interface)
+
+---
+
+## Step 9: Submit Your Work
+
+> ⏱️ **Time:** 5 minutes
+
+Once your support bot is working, it's time to submit!
+
+### 9.1 Verify Everything Works
+
+Before submitting, make sure:
+
+```bash
+# 1. All tests pass
+cd tests
+pytest -v
+
+# 2. The bot answers questions correctly
+cd ../src
+python qa_chain.py
+# Try: "How do I reset my password?" - should get a real answer
+
+# 3. Web UI works (optional)
+python web_ui.py
+# Open http://localhost:7861 and test
+```
+
+### 9.2 Commit and Push Your Code
+
+```bash
+# From the rag-document-qa folder
+git add .
+git commit -m "Complete RAG challenge - all functions implemented"
+git push origin main
+```
+
+### 9.3 Check GitHub Actions
+
+1. Go to your repository on GitHub
+2. Click the **Actions** tab
+3. Watch your workflow run
+4. Check the results - you should see your score!
+
+**Expected result:**
+```
+🎯 Total Score: 100/100
+🎉 CHALLENGE COMPLETE!
+```
+
+### 9.4 What Gets Graded?
+
+The automated grading checks:
+
+| Step | Function | Points |
+|------|----------|--------|
+| 3 | `chunk_document()` | 20 |
+| 4 | `generate_embeddings()` | 20 |
+| 5 | `store_embeddings()` | 20 |
+| 6 | `search()` | 20 |
+| 7 | `answer_question()` | 20 |
+
+**Total: 100 points**
+
+### 9.5 If Tests Fail in GitHub Actions
+
+1. Click on the failed workflow run
+2. Expand the failed step to see the error
+3. Fix the issue locally
+4. Run tests locally to verify: `pytest -v`
+5. Commit and push again
+
+**Common CI/CD issues:**
+- Missing `OPENAI_API_KEY` secret - add it in repo Settings → Secrets
+- Different Python version - tests run on Python 3.11
+- Qdrant connection - the workflow starts Qdrant automatically
 
 ---
 
@@ -1398,9 +1510,25 @@ Set your API key:
 # Windows PowerShell
 $env:OPENAI_API_KEY="sk-your-key"
 
+# Windows Git Bash (MINGW64)
+export OPENAI_API_KEY="sk-your-key"
+
 # Mac/Linux
 export OPENAI_API_KEY="sk-your-key"
 ```
+
+**Important:** Git Bash on Windows uses `export`, not `$env:`!
+
+</details>
+
+<details>
+<summary>❌ "Incorrect API key provided" (401 error)</summary>
+
+Your OpenAI API key is invalid or expired:
+1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+2. Create a new API key
+3. Set the new key in your terminal
+4. Restart the web UI or terminal session
 
 </details>
 
@@ -1422,8 +1550,37 @@ Make sure you're in the virtual environment:
 ```bash
 # Should see (.venv) in your prompt
 # If not, activate it:
-source .venv/bin/activate  # Mac/Linux
-.venv\Scripts\activate     # Windows
+source .venv/bin/activate  # Mac/Linux/Git Bash
+.venv\Scripts\activate     # Windows PowerShell/CMD
+```
+
+</details>
+
+<details>
+<summary>❌ "Port already in use" (Web UI)</summary>
+
+Kill the process using the port:
+```bash
+# Windows
+netstat -ano | findstr :7861
+taskkill /PID <PID> /F
+
+# Mac/Linux
+lsof -i :7861
+kill -9 <PID>
+```
+
+Or change the port in `web_ui.py` (line with `server_port=7861`).
+
+</details>
+
+<details>
+<summary>❌ "I don't have enough information" (Bot can't answer)</summary>
+
+The vector database has old or no documents. Re-ingest:
+```bash
+cd src
+python -c "from ingest import process_documents; from embeddings import embed_chunks; from retriever import store_embeddings, initialize_collection, get_client; client = get_client(); initialize_collection(client, recreate=True); chunks = process_documents('../data/sample_docs'); chunks = embed_chunks(chunks); store_embeddings(chunks)"
 ```
 
 </details>
@@ -1435,6 +1592,21 @@ Read the error message carefully. Common issues:
 - **AssertionError:** Your output doesn't match expected. Check the test to see what's expected.
 - **NotImplementedError:** You haven't implemented the function yet.
 - **TypeError:** Wrong data types. Make sure you return `List[str]` not `str`, etc.
+
+</details>
+
+<details>
+<summary>❌ Qdrant API Error: "search() got unexpected argument"</summary>
+
+The Qdrant client API changed in recent versions. Use `query_points()` instead of `search()`:
+```python
+# Old (doesn't work):
+results = client.search(collection_name=..., query_vector=...)
+
+# New (correct):
+results = client.query_points(collection_name=..., query=...)
+# Access results via: results.points
+```
 
 </details>
 

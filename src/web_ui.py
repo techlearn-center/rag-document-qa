@@ -34,7 +34,7 @@ def ask_question(question: str, history: list) -> tuple:
 
     Args:
         question: User's question
-        history: Chat history (not used but required by Gradio)
+        history: Chat history in Gradio 6.x message format
 
     Returns:
         Tuple of (history, sources_text)
@@ -55,14 +55,16 @@ def ask_question(question: str, history: list) -> tuple:
         else:
             sources_text = ""
 
-        # Add to history
-        history.append((question, answer))
+        # Add to history using Gradio 6.x message format
+        history.append({"role": "user", "content": question})
+        history.append({"role": "assistant", "content": answer})
 
         return history, sources_text
 
     except Exception as e:
         error_msg = f"Error: {str(e)}"
-        history.append((question, error_msg))
+        history.append({"role": "user", "content": question})
+        history.append({"role": "assistant", "content": error_msg})
         return history, ""
 
 
@@ -96,12 +98,11 @@ def create_demo():
             > ```
             """)
 
-        # Chat interface
+        # Chat interface (Gradio 6.x uses messages format by default)
         chatbot = gr.Chatbot(
             label="Chat",
             height=400,
             show_label=False,
-            avatar_images=(None, "https://api.dicebear.com/7.x/bottts/svg?seed=techflow"),
         )
 
         # Sources display
