@@ -1114,6 +1114,24 @@ pytest -v
 
 **All tests passing = You completed the challenge!** 🎉
 
+### 8.4 Launch the Web UI (Optional)
+
+Want a nicer interface? Launch the web-based chat UI:
+
+```bash
+cd src
+python web_ui.py
+```
+
+Then open your browser to: **http://localhost:7861**
+
+You'll see a chat interface where you can:
+- Type questions and get answers
+- Click example questions to try them
+- See which source documents were used
+
+![TechFlow Support Bot UI](https://via.placeholder.com/800x400?text=TechFlow+Support+Bot+Chat+Interface)
+
 ---
 
 ## Understanding CI/CD (For DevOps Students)

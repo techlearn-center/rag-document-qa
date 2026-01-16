@@ -67,9 +67,23 @@ def chunk_document(content: str, chunk_size: int = 500, overlap: int = 100) -> L
         - Ensure no chunk exceeds chunk_size
         - The last chunk may be smaller than chunk_size
     """
-    # TODO: Your implementation here
-    # Remove the line below and implement the chunking logic
-    raise NotImplementedError("Implement chunk_document() - See hints above!")
+    if not content:
+        return []
+
+    if len(content) <= chunk_size:
+        return [content]
+
+    chunks = []
+    start = 0
+    step = chunk_size - overlap
+
+    while start < len(content):
+        end = start + chunk_size
+        chunk = content[start:end]
+        chunks.append(chunk)
+        start += step
+
+    return chunks
 
 
 def process_documents(docs_path: str, chunk_size: int = 500, overlap: int = 100) -> List[Dict]:

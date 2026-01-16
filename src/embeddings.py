@@ -64,9 +64,19 @@ def generate_embeddings(
         - Process in batches to handle large lists efficiently
         - The response has .data attribute, each item has .embedding
     """
-    # TODO: Your implementation here
-    # Remove the line below and implement the embedding logic
-    raise NotImplementedError("Implement generate_embeddings() - See hints above!")
+    if not texts:
+        return []
+
+    client = get_client()
+    all_embeddings = []
+
+    for i in range(0, len(texts), batch_size):
+        batch = texts[i:i + batch_size]
+        response = client.embeddings.create(input=batch, model=model)
+        batch_embeddings = [item.embedding for item in response.data]
+        all_embeddings.extend(batch_embeddings)
+
+    return all_embeddings
 
 
 def embed_chunks(chunks: List[Dict]) -> List[Dict]:

@@ -8,9 +8,15 @@ Run with: pytest tests/test_chunking.py -v
 
 import pytest
 import sys
-sys.path.insert(0, '../src')
+from pathlib import Path
+
+# Add src directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 from ingest import chunk_document, load_documents, process_documents
+
+# Get the path to sample_docs relative to test file
+SAMPLE_DOCS_PATH = str(Path(__file__).parent.parent / 'data' / 'sample_docs')
 
 
 class TestChunkDocument:
@@ -86,7 +92,7 @@ class TestLoadDocuments:
 
     def test_load_sample_docs(self):
         """Test loading sample documents."""
-        docs = load_documents("../data/sample_docs")
+        docs = load_documents(SAMPLE_DOCS_PATH)
 
         assert len(docs) > 0, "Should load at least one document"
         assert all("content" in d for d in docs), "Each doc should have content"
@@ -98,7 +104,7 @@ class TestProcessDocuments:
 
     def test_process_creates_chunks(self):
         """Test that process_documents creates chunks with metadata."""
-        chunks = process_documents("../data/sample_docs", chunk_size=200, overlap=50)
+        chunks = process_documents(SAMPLE_DOCS_PATH, chunk_size=200, overlap=50)
 
         assert len(chunks) > 0, "Should create chunks"
         for chunk in chunks:

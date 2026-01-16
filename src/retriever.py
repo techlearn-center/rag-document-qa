@@ -81,9 +81,28 @@ def store_embeddings(chunks: List[Dict], client: Optional[QdrantClient] = None) 
         - Use client.upsert(collection_name=COLLECTION_NAME, points=points)
         - PointStruct needs: id (int), vector (list), payload (dict with content + metadata)
     """
-    # TODO: Your implementation here
-    # Remove the line below and implement the storage logic
-    raise NotImplementedError("Implement store_embeddings() - See hints above!")
+    if not chunks:
+        return 0
+
+    if client is None:
+        client = get_client()
+
+    initialize_collection(client)
+
+    points = []
+    for i, chunk in enumerate(chunks):
+        point = PointStruct(
+            id=i,
+            vector=chunk["embedding"],
+            payload={
+                "content": chunk["content"],
+                "metadata": chunk.get("metadata", {})
+            }
+        )
+        points.append(point)
+
+    client.upsert(collection_name=COLLECTION_NAME, points=points)
+    return len(points)
 
 
 def search(
@@ -118,9 +137,24 @@ def search(
         - Each result has .payload (dict) and .score (float)
         - Extract content and metadata from payload
     """
-    # TODO: Your implementation here
-    # Remove the line below and implement the search logic
-    raise NotImplementedError("Implement search() - See hints above!")
+    if client is None:
+        client = get_client()
+
+    results = client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=query_embedding,
+        limit=top_k
+    )
+
+    processed = []
+    for result in results.points:
+        processed.append({
+            "content": result.payload["content"],
+            "metadata": result.payload.get("metadata", {}),
+            "score": result.score
+        })
+
+    return processed
 
 
 def search_with_text(query: str, top_k: int = 5) -> List[Dict]:

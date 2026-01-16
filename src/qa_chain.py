@@ -97,9 +97,40 @@ def answer_question(
         - Extract answer from response.choices[0].message.content
         - Include sources in the response for transparency
     """
-    # TODO: Your implementation here
-    # Remove the line below and implement the RAG pipeline
-    raise NotImplementedError("Implement answer_question() - See hints above!")
+    # 1. Retrieve relevant chunks
+    results = search_with_text(question, top_k)
+
+    # 2. Build context
+    context = build_context(results)
+
+    # 3. Create prompt
+    prompt = f"""You are a helpful assistant. Answer the question based ONLY on the provided context.
+If the context doesn't contain the answer, say "I don't have enough information to answer this question."
+
+Context:
+{context}
+
+Question: {question}
+
+Answer:"""
+
+    # 4. Call GPT
+    client = get_openai_client()
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=temperature
+    )
+    answer = response.choices[0].message.content
+
+    # 5. Return structured response
+    sources = [r.get("metadata", {}).get("source", "Unknown") for r in results]
+
+    return {
+        "answer": answer,
+        "sources": list(set(sources)),  # Unique sources
+        "context_used": context
+    }
 
 
 def interactive_qa():
